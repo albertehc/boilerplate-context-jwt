@@ -18,8 +18,8 @@ exports.signup = async (req, res) => {
         const salt = await bcryptjs.genSalt(10);
         req.body.password = await bcryptjs.hash(password,salt);
         const userDB = await User.collection.insertOne({...req.body, created_at: Date.now(), updated_at: Date.now()});
-        const { _id, created_at } = userDB.ops[0];
-        const payload = { user: { id: _id, username, email, created_at} }
+        const { _id } = userDB.ops[0];
+        const payload = { user: { id: _id, username, email} }
         res.json(signToken(payload));
         
     } catch (e) {

@@ -29,8 +29,11 @@ exports.login = async (req, res) => {
 }
 
 exports.me = async (req,res) => {
+    console.log(req.body.user)
     try {
-        const user = await User.findById
+        const user = await User.findOne({email: req.body.user.email}).select('-password');
+        const payload = { user: { id: user._id, username: user.username, email: user.email} }
+        res.json(signToken(payload));
     } catch (e) {
         console.log(e);
         res.status(500).json({msg: 'Server error'});
