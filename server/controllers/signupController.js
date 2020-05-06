@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
         res.json(signToken(payload));
         
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(400).send('An error ocurred');
     }
 }
