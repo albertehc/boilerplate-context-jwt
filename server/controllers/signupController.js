@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()})
     }
-    const { email,password } = req.body;
+    const { email, password, username } = req.body;
 
     try {
         let user = await User.findOne({email});
@@ -16,14 +16,9 @@ exports.signup = async (req, res) => {
             return res.status(400).json({msg: 'Email already exist'});
         }
         req.body.password = bcryptjs.hashSync(password,10);
-        await User.create(req.body)
-
-        const payload = {
-            user: {
-                id: req.body.id
-            }
-        }
-
+        const userDB = await User.collection.insertOne({...req.body, created_at: Date.now(), updated_at: Date.now()});
+        const { _id } = userDB.ops[0];
+        const payload = { user: { id: _id, username, email} }
         jwt.sign(payload, process.env.SECRETKEY,{
             expiresIn: 31536000 // 1 Year
         },(error, token) => {

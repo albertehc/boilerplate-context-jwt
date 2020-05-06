@@ -5,7 +5,8 @@ module.exports = (req,res,next) => {
     if (!token) { return res.status(401).json({msg: 'Unauthorized'}) }
     try {
         const signature = jwt.verify(token, process.env.SECRETKEY);
-        req.username = signature.username;
+        req.body.user.email = signature.email;
+        req.body.user.username = signature.username;
         next();
     } catch (e) {
         res.status(401).json({msg: 'No valid Token'});

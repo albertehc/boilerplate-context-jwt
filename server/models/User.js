@@ -9,8 +9,9 @@ const userSchema = mongoose.Schema(
     username: defaultConfig,
     email: { ...defaultConfig, unique: true },
     password: defaultConfig,
-  },
-  { timestamps: true }
+    created_at: { type: Date, default: Date.now() },
+    updated_at: { type: Date, default: Date.now() }
+  }
 );
 
 module.exports = mongoose.model("User", userSchema);
