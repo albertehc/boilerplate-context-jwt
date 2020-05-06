@@ -7,6 +7,6 @@ const auth = require("./../middleware/auth");
 // /api/auth/
 router.post("/", authController.login);
 
-router.get("/", auth, authController.authMe);
+//router.get("/", auth, authController.authMe);
 
 module.exports = router;

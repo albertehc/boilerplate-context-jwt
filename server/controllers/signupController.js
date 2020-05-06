@@ -15,7 +15,8 @@ exports.signup = async (req, res) => {
         if (user) {
             return res.status(400).json({msg: 'Email already exist'});
         }
-        req.body.password = bcryptjs.hashSync(password,10);
+        const salt = await bcryptjs.genSalt(10);
+        req.body.password = await bcryptjs.hash(password,salt);
         const userDB = await User.collection.insertOne({...req.body, created_at: Date.now(), updated_at: Date.now()});
         const { _id } = userDB.ops[0];
         const payload = { user: { id: _id, username, email} }
