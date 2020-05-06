@@ -1,10 +1,9 @@
 const User = require('./../models/User');
 const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const signToken = require('./../helpers/signToken')
 const { validationResult } = require('express-validator');
 
 exports.login = async (req, res) => {
-    console.log(1);
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res.status(400).json({errors: errors.array()})
@@ -19,10 +18,21 @@ exports.login = async (req, res) => {
         const checkPassword = bcryptjs.compare(password, user.password);
         if (!checkPassword) return res.status(400).json({msg: 'Email or password not valid'});
         
-        const payload = { user: { id: _id, username, email} }
 
-        console.log(user)
+        const payload = { user: { id: user._id, username: user.username, email} }
+
+        res.json(signToken(payload));
     } catch (e) {
         console.log(e);
+        res.status(500).json({msg: 'Server error'});
     }
 }
+
+exports.me = async (req,res) => {
+    try {
+        const user = await User.findById
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({msg: 'Server error'});
+    }
+} 
