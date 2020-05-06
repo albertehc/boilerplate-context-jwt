@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   }
   try {
     const signature = jwt.verify(token, process.env.SECRETKEY);
-    req.body.user = signature.user;
+    req.body.token = signature.token;
     next();
   } catch (e) {
     console.error(e);

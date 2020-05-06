@@ -16,11 +16,11 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(400).json({ msg: "Email or password not valid" });
 
-    const checkPassword = bcryptjs.compare(password, user.password);
+    const checkPassword = await bcryptjs.compare(password, user.password);
     if (!checkPassword)
       return res.status(400).json({ msg: "Email or password not valid" });
 
-    const payload = { user: { id: user._id, username: user.username, email } };
+    const payload = { token: { id: user._id, username: user.username, email } };
 
     res.json(signToken(payload));
   } catch (e) {
@@ -36,11 +36,11 @@ exports.me = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email: req.body.user.email }).select(
+    const user = await User.findOne({ email: req.body.token.email }).select(
       "-password"
     );
     const payload = {
-      user: { id: user._id, username: user.username, email: user.email },
+      token: { id: user._id, username: user.username, email: user.email },
     };
     res.json(signToken(payload));
   } catch (e) {
@@ -50,21 +50,27 @@ exports.me = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
-  const { password, email, username } = req.body;
+	const { username, oldPassword, email, password } = req.body;
+	const { id } = req.body.token;
   try {
-    if (email !== req.body.user.email) {
+    if (email !== req.body.token.email) {
       const checkEmail = await User.findOne({ email });
       if (checkEmail) return res.status(400).json({ msg: "Email not valid" });
-    }
+		}
+
+		const userData = await User.findById(id);
+		const checkPassword = await bcryptjs.compare(oldPassword, userData.password);
+		if (!checkPassword) return res.status(400).json({ msg: "Password incorrect" });
+
     const salt = await bcryptjs.genSalt(10);
-    const hashPassword = await bcryptjs.hash(password, salt);
-    const user = await User.findByIdAndUpdate(req.body.user.id, {
+		const hashPassword = await bcryptjs.hash(password, salt);
+		await User.findByIdAndUpdate(id, {
       username,
       email,
       password: hashPassword,
-    }).select("-password");
-    const payload = {
-      user: { id: user._id, username: user.username, email: user.email },
+		});
+		const payload = {
+      token: { id, username, email },
     };
     res.json(signToken(payload));
   } catch (e) {
@@ -74,8 +80,13 @@ exports.edit = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  try {
-    await User.findByIdAndRemove(req.body.user.id);
+	const { id } = req.body.token;
+	try {
+		const userData = await User.findById(id);
+		if (!req.body.password) return res.status(400).json({ msg: "Password empty" });
+		const checkPassword = await bcryptjs.compare(req.body.password, userData.password);
+		if (!checkPassword) return res.status(400).json({ msg: "Password incorrect" });
+    await User.findByIdAndRemove(id);
     res.json({ msg: "User deleted" });
   } catch (e) {
     console.error(e);

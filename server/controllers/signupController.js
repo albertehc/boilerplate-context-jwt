@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
       updated_at: Date.now(),
     });
     const { _id } = userDB.ops[0];
-    const payload = { user: { id: _id, username, email } };
+    const payload = { token: { id: _id, username, email } };
     res.json(signToken(payload));
   } catch (e) {
     console.error(e);
