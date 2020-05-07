@@ -2,6 +2,7 @@ const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const signToken = require("./../helpers/signToken");
 const User = require("./../models/User");
+const sendCookie = require('./../helpers/sendCookie')
 
 exports.signup = async (req, res) => {
   const errors = validationResult(req);
@@ -23,8 +24,8 @@ exports.signup = async (req, res) => {
       updated_at: Date.now(),
     });
     const { _id } = userDB.ops[0];
-    const payload = { token: { id: _id, username, email } };
-    res.json(signToken(payload));
+    const payload = { id: _id, username, email };
+    sendCookie(res,signToken(payload));
   } catch (e) {
     console.error(e);
     res.status(400).send("An error ocurred");

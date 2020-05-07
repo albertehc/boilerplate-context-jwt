@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-  const token = req.header("x-auth-token");
-  if (!token) {
+  if (!req.cookies[process.env.WEBSITENAME]) {
     return res.status(401).json({ msg: "Unauthorized" });
   }
+  const token = req.cookies[process.env.WEBSITENAME];
   try {
     const signature = jwt.verify(token, process.env.SECRETKEY);
-    req.body.token = signature.token;
+    req.body.token = signature;
     next();
   } catch (e) {
     console.error(e);
