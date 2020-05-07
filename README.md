@@ -1,18 +1,19 @@
 ## Boilerplate AUTH Frontend (React with Hooks) Backend (Node)
 
-Frontend: Context, Custom Hooks, Hook Form, Cookies, Json Web Token, Styled Components, Axios with interfaces.
-Backend: Node, Express, Express-validator, Json Web Token, cookies, cors, dotenv, mongoose, bcryptjs, cookie parser, multiple validations and securities.
+*Frontend:* Context, Custom Hooks, Hook Form, Cookies, Json Web Token, Styled Components, Axios with interfaces.
 
-Client:
-Development:
+*Backend:* Node, Express, Express-validator, Json Web Token, cookies, cors, dotenv, mongoose, bcryptjs, cookie parser, multiple validations and securities.
+
+## FRONTEND:
+*Development:*
 ### `npm start or yarn start`
-Production:
+*Production:*
 ### `npm run build or yarn run build`
 
-Backend:
-Development:
+## BACKEND:
+*Development:*
 ### `npm run dev or yarn run dev`
-Production:
+*Production:*
 ### `npm start or yarn start`
 
 REMEMBER TO COMPLETE THE .ENV.EXAMPLES
