@@ -29,7 +29,6 @@ export function Signup() {
           placeholder="Username"
           name="Username"
           ref={register({
-            trim: true,
             required: { value: true, message: "Username can't be empty" },
             maxLength: { value: 20, message: "Username max length is 20" },
             pattern: {
