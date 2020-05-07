@@ -1,6 +1,6 @@
 module.exports = (res, token) => {
   res.cookie(process.env.WEBSITENAME, token, {
-    maxAge: 43200000,
+    maxAge: parseInt(process.env.COOKIEEXPIRATION),
     httpOnly: true,
     secure: false
   }).status(200).json('OK')
