@@ -2,7 +2,7 @@
   "name": "backend-boilerplate",
   "version": "1.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.jsx",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
