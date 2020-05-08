@@ -5,7 +5,7 @@ export const Username = ({ register, errors }) => (
     <input
       type="text"
       placeholder="Username"
-      name="Username"
+      name="username"
       ref={register({
         required: { value: true, message: "Username can't be empty" },
         maxLength: { value: 20, message: "Username max length is 20" },
@@ -15,6 +15,6 @@ export const Username = ({ register, errors }) => (
         },
       })}
     />
-    {errors.Username && <span className="">{errors.Username.message}</span>}
+    {errors.username && <span className="">{errors.username.message}</span>}
   </div>
 );

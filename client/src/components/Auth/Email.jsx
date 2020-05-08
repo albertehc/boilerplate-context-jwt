@@ -5,7 +5,7 @@ export const Email = ({ register, errors }) => (
     <input
       type="text"
       placeholder="Email"
-      name="Email"
+      name="email"
       ref={register({
         required: { value: true, message: "Email can't be empty" },
         maxLength: 80,
@@ -15,6 +15,6 @@ export const Email = ({ register, errors }) => (
         },
       })}
     />
-    {error && errors.Email && <span className="">{errors.Email.message}</span>}
+    {errors.email && <span className="">{errors.email.message}</span>}
   </div>
 );

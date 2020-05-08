@@ -3,7 +3,7 @@ import React from "react";
 export const Password = ({ register, errors }) => (
   <div>
     <input
-      name="Password"
+      name="password"
       type="password"
       placeholder="Password"
       ref={register({
@@ -14,6 +14,6 @@ export const Password = ({ register, errors }) => (
         },
       })}
     />
-    {errors.Password && <span className="">{errors.Password.message}</span>}
+    {errors.password && <span className="">{errors.password.message}</span>}
   </div>
 );

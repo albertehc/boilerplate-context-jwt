@@ -3,7 +3,7 @@ import React from "react";
 export const RepeatPassword = ({ password, register, errors }) => (
   <div>
     <input
-      name="Password_repeat"
+      name="password_repeat"
       placeholder="Repeat password"
       type="password"
       ref={register({
@@ -12,8 +12,8 @@ export const RepeatPassword = ({ password, register, errors }) => (
           value === password.current || "The passwords do not match",
       })}
     />
-    {errors.Password_repeat && (
-      <span className="">{errors.Password_repeat.message}</span>
+    {errors.password_repeat && (
+      <span className="">{errors.password_repeat.message}</span>
     )}
   </div>
 );
