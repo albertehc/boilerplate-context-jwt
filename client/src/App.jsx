@@ -8,7 +8,7 @@ import { Login } from "./pages/Login/Login";
 import { Edit } from "./pages/Edit/Edit";
 import { Routes } from './constants/';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Navbar />

@@ -6,24 +6,27 @@ import { Username } from "../../components/Auth/Username";
 import { Password } from "../../components/Auth/Password";
 import { RepeatPassword } from "../../components/Auth/RepeatPassword";
 import { useAuthContext } from "./../../context/auth/authContext";
+import { signup } from "../../api/auth.api";
 import {
   setUserAction,
   setUserActionError,
 } from "./../../context/auth/authActions";
-import { signup } from "../../api/auth.api";
-//import { signup, login, edit, remove, me } from "../../api/auth.api";
-export function Signup() {
+
+
+export const Signup = () => {
   const [error, setError] = useState(false);
   const { register, handleSubmit, errors, watch } = useForm();
   const [{ msg }, dispatch] = useAuthContext();
   const password = useRef({});
   password.current = watch("password", "");
+
   const onSubmit = (data) => {
     const { username, email, password } = data;
     signup({ username, email, password })
       .then((res) => dispatch(setUserAction(res)))
       .catch((e) => dispatch(setUserActionError(e.response.data.msg)));
   };
+  
   useEffect(() => {
     setError(true);
   }, [msg]);
