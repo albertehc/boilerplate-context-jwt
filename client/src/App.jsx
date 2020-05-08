@@ -6,16 +6,17 @@ import { Home } from "./pages/Home/Home";
 import { Signup } from "./pages/Signup/Signup";
 import { Login } from "./pages/Login/Login";
 import { Edit } from "./pages/Edit/Edit";
+import { Routes } from './constants/';
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/edit" component={Edit} />
+        <Route exact path={Routes.HOME} component={Home} />
+        <Route exact path={Routes.LOGIN} component={Login} />
+        <Route exact path={Routes.SIGNUP} component={Signup} />
+        <Route exact path={Routes.EDIT} component={Edit} />
       </Switch>
       <Footer />
     </Router>

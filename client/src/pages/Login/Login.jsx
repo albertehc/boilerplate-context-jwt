@@ -11,10 +11,10 @@ export function Login() {
   password.current = watch("password", "");
   const onSubmit = (data) => {
     const { email, password } = data;
-    login({ email, password }).then(response => console.log(response));
-    console.log(document.cookie);
+    login({ email, password }).then(response => console.log(response))
+    .then(console.log(document.cookie));
   };
-
+  console.log(document.cookie)
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>

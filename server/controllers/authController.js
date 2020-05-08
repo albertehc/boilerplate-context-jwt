@@ -1,7 +1,6 @@
 const bcryptjs = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const User = require("./../models/User");
-const signToken = require("./../helpers/signToken");
 const sendCookie = require("./../helpers/sendCookie");
 
 exports.login = async (req, res) => {
@@ -23,7 +22,7 @@ exports.login = async (req, res) => {
 
     const payload = { id: user._id, username: user.username, email };
 
-    sendCookie(res, signToken(payload));
+    sendCookie(res, payload);
   } catch (e) {
     console.error(e);
     res.status(500).json({ msg: "Server error" });
@@ -44,7 +43,7 @@ exports.me = async (req, res) => {
       username: user.username,
       email: user.email,
     };
-    sendCookie(res, signToken(payload));
+    sendCookie(res, payload);
   } catch (e) {
     console.error(e);
     res.status(500).json({ msg: "Server error" });
@@ -82,7 +81,7 @@ exports.edit = async (req, res) => {
       updated_at: Date.now(),
     });
     const payload = { id, username, email };
-    sendCookie(res, signToken(payload));
+    sendCookie(res, payload);
   } catch (e) {
     console.error(e);
     res.status(500).json({ msg: "Server error" });
