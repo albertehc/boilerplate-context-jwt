@@ -9,10 +9,12 @@ import {
   setUserAction,
   setUserActionError,
 } from "./../../context/auth/authActions";
+import { useHistory } from "react-router-dom";
 
 export const Login = () => {
   const [{ msg }, dispatch] = useAuthContext();
   const [error, setError] = useState(false);
+  const history = useHistory();
   const { register, handleSubmit, errors, watch } = useForm();
   const password = useRef({});
   password.current = watch("password", "");
@@ -21,7 +23,16 @@ export const Login = () => {
     const { email, password } = data;
     login({ email, password })
       .then((res) => dispatch(setUserAction(res)))
-      .catch((e) => dispatch(setUserActionError(e.response.data.msg)));
+      .then(() => history.push("/"))
+      .catch((e) => {
+        e.response
+          ? dispatch(setUserActionError(e.response.data.msg))
+          : dispatch(
+              setUserActionError(
+                "Could not reach server, try again in a few minutes"
+              )
+            );
+      });
   };
 
   useEffect(() => {
@@ -32,10 +43,16 @@ export const Login = () => {
     <>
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
         <div>{error && msg}</div>
-        <Email register={register} errors={errors} />
-        <Password register={register} errors={errors} />
+        <Email placeholder={'Email'} register={register} errors={errors} />
+        <Password
+          name={"password"}
+          edit={false}
+          placeholder={"Password"}
+          register={register}
+          errors={errors}
+        />
         <input type="submit" />
       </Form>
     </>
   );
-}
+};

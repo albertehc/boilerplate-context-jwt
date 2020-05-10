@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Username = ({ register, errors }) => (
+export const Username = ({placeholder, register, errors }) => (
   <div>
     <input
       type="text"
-      placeholder="Username"
+      placeholder={placeholder}
       name="username"
       ref={register({
         required: { value: true, message: "Username can't be empty" },

@@ -1,10 +1,10 @@
 import React from "react";
 
-export const Email = ({ register, errors }) => (
+export const Email = ({placeholder, register, errors }) => (
   <div>
     <input
       type="text"
-      placeholder="Email"
+      placeholder={placeholder}
       name="email"
       ref={register({
         required: { value: true, message: "Email can't be empty" },

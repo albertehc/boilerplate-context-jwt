@@ -6,7 +6,7 @@ const sendCookie = require("./../helpers/sendCookie");
 exports.login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ msg: errors.array()[0].msg });
   }
 
   const { email, password } = req.body;
@@ -14,11 +14,11 @@ exports.login = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (!user)
-      return res.status(400).json({ msg: "Email or password not valid" });
+      return res.status(401).json({ msg: "Email or password not valid" });
 
     const checkPassword = await bcryptjs.compare(password, user.password);
     if (!checkPassword)
-      return res.status(400).json({ msg: "Email or password not valid" });
+      return res.status(401).json({ msg: "Email or password not valid" });
 
     const payload = { id: user._id, username: user.username, email };
 
@@ -33,7 +33,7 @@ exports.me = async (req, res) => {
   const { email } = req.body.token;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ msg: errors.array()[0].msg });
   }
 
   try {
@@ -53,7 +53,7 @@ exports.me = async (req, res) => {
 exports.edit = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ msg: errors.array()[0].msg });
   }
   const { username, email, password } = req.body;
   let { oldPassword } = req.body;
@@ -61,19 +61,20 @@ exports.edit = async (req, res) => {
   try {
     if (email !== req.body.token.email) {
       const checkEmail = await User.findOne({ email });
-      if (checkEmail) return res.status(400).json({ msg: "Email not valid" });
+      if (checkEmail) return res.status(401).json({ msg: "Email not valid" });
     }
-    if (!oldPassword) oldPassword = password;
     const userData = await User.findById(id);
     const checkPassword = await bcryptjs.compare(
       oldPassword,
       userData.password
     );
     if (!checkPassword)
-      return res.status(400).json({ msg: "Password incorrect" });
-
-    const salt = await bcryptjs.genSalt(10);
-    const hashPassword = await bcryptjs.hash(password, salt);
+      return res.status(401).json({ msg: "Password incorrect" });
+    let hashPassword = userData.password;
+    if (password !== oldPassword) {
+      const salt = await bcryptjs.genSalt(10);
+      hashPassword = await bcryptjs.hash(password, salt);
+    }
     await User.findByIdAndUpdate(id, {
       username,
       email,
@@ -96,7 +97,7 @@ exports.delete = async (req, res) => {
     if (!password) return res.status(400).json({ msg: "Password empty" });
     const checkPassword = await bcryptjs.compare(password, userData.password);
     if (!checkPassword)
-      return res.status(400).json({ msg: "Password incorrect" });
+      return res.status(401).json({ msg: "Password incorrect" });
     await User.findByIdAndRemove(id);
     res.clearCookie(process.env.WEBSITENAME);
     res.status(200).json({ msg: "User deleted" });
