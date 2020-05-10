@@ -8,7 +8,7 @@ exports.signup = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ msg: errors.array()[0].msg });
   }
-  const { email, password } = req.body;
+  const { email, password, username } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -23,7 +23,7 @@ exports.signup = async (req, res) => {
       updated_at: Date.now(),
     });
     const { _id } = userDB.ops[0];
-    const payload = { id: _id };
+    const payload = { id: _id, username, email };
     sendCookie(res, payload);
   } catch (e) {
     console.error(e);
