@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
     if (!checkPassword)
       return res.status(401).json({ msg: "Email or password not valid" });
 
-    const payload = { id: user._id, username: user.username, email };
+    const payload = { id: user._id };
 
     sendCookie(res, payload);
   } catch (e) {
@@ -40,8 +40,6 @@ exports.me = async (req, res) => {
     const user = await User.findOne({ email }).select("-password");
     const payload = {
       id: user._id,
-      username: user.username,
-      email: user.email,
     };
     sendCookie(res, payload);
   } catch (e) {
@@ -81,7 +79,7 @@ exports.edit = async (req, res) => {
       password: hashPassword,
       updated_at: Date.now(),
     });
-    const payload = { id, username, email };
+    const payload = { id };
     sendCookie(res, payload);
   } catch (e) {
     console.error(e);
