@@ -1,6 +1,7 @@
 import {
   USER_RESPONSE,
   USER_RESPONSE_ERROR,
+  LOADING
 } from "../../constants";
 
 export const setUserAction = (data) => ({
@@ -10,4 +11,7 @@ export const setUserAction = (data) => ({
 export const setUserActionError = (data) => ({
   type: USER_RESPONSE_ERROR,
   payload: data,
+});
+export const setLoading = (data) => ({
+  type: LOADING
 });

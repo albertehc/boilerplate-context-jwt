@@ -1,7 +1,8 @@
 import swal from "sweetalert";
-import { setUserAction } from "../context/auth/authActions";
+import { setUserAction, setLoading } from "../context/auth/authActions";
 
 export const submitApi = ({ data, api, action, history, dispatch }) => {
+  dispatch(setLoading());
   api(data)
     .then((res) => {
       dispatch(setUserAction(res));

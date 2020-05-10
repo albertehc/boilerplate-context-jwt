@@ -9,3 +9,4 @@ export const Routes = { HOME, LOGIN, SIGNUP, EDIT };
 
 export const USER_RESPONSE = 'USER_RESPONSE';
 export const USER_RESPONSE_ERROR = 'USER_RESPONSE_ERROR';
+export const LOADING = 'LOADING';
