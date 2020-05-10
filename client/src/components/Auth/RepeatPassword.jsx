@@ -7,6 +7,7 @@ export const RepeatPassword = ({ placeholder, password, register, errors }) => {
     validate: (value) =>
       value === password.current || "The passwords do not match",
   }
+
   return (<div>
     <input
       name="password_repeat"

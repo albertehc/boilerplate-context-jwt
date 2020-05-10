@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import { Form } from "./styles";
 import { Email } from "../../components/Auth/Email";
 import { Username } from "../../components/Auth/Username";
@@ -7,42 +8,19 @@ import { Password } from "../../components/Auth/Password";
 import { RepeatPassword } from "../../components/Auth/RepeatPassword";
 import { useAuthContext } from "./../../context/auth/authContext";
 import { edit } from "../../api/auth.api";
-import {
-  setUserAction,
-  setEditActionError,
-} from "./../../context/auth/authActions";
+import { submitApi } from "../../helpers/submitApi.js";
 
 export const Edit = () => {
-  const [error, setError] = useState(false);
-  const { register, handleSubmit, errors, reset, watch, setValue } = useForm();
-  const [{ username, email, msg }, dispatch] = useAuthContext();
+  const { register, handleSubmit, errors, watch, setValue } = useForm();
+  const [{ username, email }, dispatch] = useAuthContext();
   const password = useRef({});
+  const history = useHistory();
   password.current = watch("password", "");
 
   const onSubmit = (data) => {
-    const { username, email, password, oldPassword } = data;
-    edit({ username, email, password, oldPassword })
-      .then((res) => {
-        dispatch(setUserAction(res));
-        reset({oldPassword: "",password:"",repeat_password:""})})
-      .catch((e) => {
-        e.response
-          ? dispatch(setEditActionError(e.response.data.msg))
-          : dispatch(
-              setEditActionError(
-                "Could not reach server, try again in a few minutes"
-              )
-            );
-      })
-      .then(() => {
-        setValue("email", email);
-        setValue("username", username);
-      });
-  };
-  console.log(error);
-  useEffect(() => {
-    setError(true);
-  }, [msg]);
+    submitApi({ data, api: edit ,action: 'Edit', history, dispatch })
+  }
+
   useEffect(() => {
     setValue("email", email);
     setValue("username", username);
@@ -51,7 +29,6 @@ export const Edit = () => {
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
-        <div>{error && msg}</div>
         <Email placeholder="Email" register={register} errors={errors} />
         <Username
           placeholder={"Username"}
