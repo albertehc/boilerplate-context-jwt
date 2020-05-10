@@ -1,7 +1,6 @@
 import {
   USER_RESPONSE,
-  USER_RESPONSE_ERROR,
-  USER_RESPONSE_EDIT_ERROR
+  USER_RESPONSE_ERROR
 } from "./../../constants/";
 
 export const initialState = {
@@ -32,12 +31,6 @@ export const reducer = (state, action) => {
         id: null,
         username: null,
         email: null,
-        msg: action.payload,
-        loading: false,
-      };
-    case USER_RESPONSE_EDIT_ERROR:
-      return {
-        ...state,
         msg: action.payload,
         loading: false,
       };

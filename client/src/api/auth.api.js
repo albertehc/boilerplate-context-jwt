@@ -19,3 +19,7 @@ export const remove = data => {
 export const me = () => {
   return axiosInstance.get('/api/auth');
 }
+
+export const logout = () => {
+  return axiosInstance.post('/api/auth/logout');
+}

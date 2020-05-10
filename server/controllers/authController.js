@@ -106,3 +106,13 @@ exports.delete = async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie(process.env.WEBSITENAME);
+    res.status(200).json({ msg: "Log out sucesfully" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
