@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Loader from "react-loader-spinner";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
 import { Home } from "./pages/Home/Home";
@@ -11,19 +12,28 @@ import { AnonRoute } from "./routes/AnonRoute";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { useAuthContext } from "./context/auth/authContext";
 import { me } from "./api/auth.api";
-import { setUserAction } from "./context/auth/authActions";
-import Loader from 'react-loader-spinner'
+import { setUserAction, setUserActionError } from "./context/auth/authActions";
 
 const App = () => {
-  const [{ logged,loading }, dispatch] = useAuthContext();
+  const [{ logged, loading }, dispatch] = useAuthContext();
   useEffect(() => {
     if (!logged) {
-      me().then((res) => dispatch(setUserAction(res)));
+      me().then((res) => {
+        if (res?.msg !== "Unauthorized") {
+          dispatch(setUserAction(res));
+        } else {
+          dispatch(setUserActionError());
+        }
+      });
     }
     // eslint-disable-next-line
   }, []);
-  console.log(loading)
-  if (loading) return <><Loader color='#158AFF' className='loader' type='ThreeDots'/></>
+  if (loading)
+    return (
+      <>
+        <Loader color="#158AFF" className="loader" type="ThreeDots" />
+      </>
+    );
   return (
     <Router>
       <Navbar />
