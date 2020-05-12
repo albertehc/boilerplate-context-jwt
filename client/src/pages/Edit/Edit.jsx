@@ -10,10 +10,12 @@ import { RepeatPassword } from "../../components/Auth/RepeatPassword";
 import { useAuthContext } from "./../../context/auth/authContext";
 import { edit } from "../../api/auth.api";
 import { submitApi } from "../../helpers/submitApi.js";
+import { Select } from "./../../components/Auth/Select";
+import { languages, themes } from "./../../constants";
 
 export const Edit = () => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
-  const [{ username, email }, dispatch] = useAuthContext();
+  const [{ username, email, language, theme }, dispatch] = useAuthContext();
   const password = useRef({});
   const history = useHistory();
   password.current = watch("password", "");
@@ -25,16 +27,15 @@ export const Edit = () => {
   useEffect(() => {
     setValue("email", email);
     setValue("username", username);
+    setValue("language", language);
+    setValue("theme", theme);
   }, [email, username, setValue]);
 
   return (
     <>
       <Helmet>
         <title>Edit</title>
-        <meta
-          name="description"
-          content="Edit Page"
-        />
+        <meta name="description" content="Edit Page" />
       </Helmet>
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
         <Email placeholder="Email" register={register} errors={errors} />
@@ -63,6 +64,8 @@ export const Edit = () => {
           register={register}
           errors={errors}
         />
+        <Select type='language' register={register} selects={languages} />
+        <Select type='theme' register={register} selects={themes}/>
         <input type="submit" />
       </Form>
     </>
