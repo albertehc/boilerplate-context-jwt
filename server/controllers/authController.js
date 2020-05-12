@@ -19,8 +19,13 @@ exports.login = async (req, res) => {
     const checkPassword = await bcryptjs.compare(password, user.password);
     if (!checkPassword)
       return res.status(401).json({ msg: "Email or password not valid" });
-
-    const payload = { id: user._id, username: user.username, email };
+    const payload = {
+      id: user._id,
+      username: user.username,
+      email,
+      theme: user.theme,
+      language: user.language,
+    };
 
     sendCookie(res, payload);
   } catch (e) {
@@ -42,6 +47,8 @@ exports.me = async (req, res) => {
       id: user._id,
       username: user.username,
       email: user.email,
+      theme: user.theme,
+      language: user.language,
     };
     sendCookie(res, payload);
   } catch (e) {
@@ -55,7 +62,7 @@ exports.edit = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ msg: errors.array()[0].msg });
   }
-  const { username, email, password } = req.body;
+  const { username, email, password, theme, language } = req.body;
   let { oldPassword } = req.body;
   const { id } = req.body.token;
   try {
@@ -79,9 +86,11 @@ exports.edit = async (req, res) => {
       username,
       email,
       password: hashPassword,
+      theme,
+      language,
       updated_at: Date.now(),
     });
-    const payload = { id, username, email };
+    const payload = { id, username, email, theme, language };
     sendCookie(res, payload);
   } catch (e) {
     console.error(e);

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Loader from "react-loader-spinner";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Footer } from "./components/Footer/Footer";
@@ -36,6 +37,9 @@ const App = () => {
     );
   return (
     <Router>
+      <Helmet titleTemplate={`%s - ${process.env.REACT_APP_WEBNAME}`} defaultTitle={process.env.REACT_APP_WEBNAME}>
+        <meta name="description" content={process.env.REACT_APP_WEBNAME} />
+      </Helmet>
       <Navbar />
       <Switch>
         <Route exact path={Routes.HOME} component={Home} />

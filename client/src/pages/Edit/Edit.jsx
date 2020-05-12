@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { Form } from "./styles";
@@ -18,8 +19,8 @@ export const Edit = () => {
   password.current = watch("password", "");
 
   const onSubmit = (data) => {
-    submitApi({ data, api: edit ,action: 'Edit', history, dispatch })
-  }
+    submitApi({ data, api: edit, action: "Edit", history, dispatch });
+  };
 
   useEffect(() => {
     setValue("email", email);
@@ -28,6 +29,13 @@ export const Edit = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Edit</title>
+        <meta
+          name="description"
+          content="Edit Page"
+        />
+      </Helmet>
       <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
         <Email placeholder="Email" register={register} errors={errors} />
         <Username

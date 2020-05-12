@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Email = React.memo(({placeholder, register, errors }) => (
+export const Email = ({placeholder, register, errors }) => (
   <div>
     <input
       type="text"
@@ -17,4 +17,4 @@ export const Email = React.memo(({placeholder, register, errors }) => (
     />
     {errors.email && <span className="">{errors.email.message}</span>}
   </div>
-));
+);

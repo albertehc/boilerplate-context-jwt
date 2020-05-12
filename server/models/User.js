@@ -8,6 +8,8 @@ const userSchema = mongoose.Schema({
   username: defaultConfig,
   email: { ...defaultConfig, unique: true },
   password: defaultConfig,
+  language: defaultConfig,
+  theme: defaultConfig,
   created_at: { type: Date, default: Date.now() },
   updated_at: { type: Date, default: Date.now() },
 });

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Form } from "./styles";
 import { Email } from "../../components/Auth/Email";
@@ -17,15 +18,16 @@ export const Signup = () => {
   const password = useRef({});
   password.current = watch("password", "");
   const onSubmit = (data) => {
-    submitApi({ data, api: signup ,action: 'Submit', history, dispatch })
-  }
+    submitApi({ data, api: signup, action: "Submit", history, dispatch });
+  };
 
   return (
     <>
-      <Form
-        onSubmit={handleSubmit(onSubmit)}
-        autoComplete={"off"}
-      >
+      <Helmet>
+        <title>Signup</title>
+        <meta name="description" content="Signup Page" />
+      </Helmet>
+      <Form onSubmit={handleSubmit(onSubmit)} autoComplete={"off"}>
         <Email placeholder={"Email"} register={register} errors={errors} />
         <Username
           placeholder={"Username"}

@@ -5,12 +5,15 @@ import * as serviceWorker from "./serviceWorker";
 import { AuthProvider } from "./context/auth/authContext";
 import { initialState, reducer } from "./context/auth/authReducer";
 import GlobalStyle from "./Global.styles";
+import { HelmetProvider } from "react-helmet-async";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider initialState={initialState} reducer={reducer}>
-      <GlobalStyle />
-      <App />
+      <HelmetProvider>
+        <GlobalStyle />
+        <App />
+      </HelmetProvider>
     </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
