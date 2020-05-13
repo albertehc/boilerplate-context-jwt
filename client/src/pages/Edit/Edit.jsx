@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
+import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { Form } from "./styles";
 import { Email } from "../../components/Auth/Email";
@@ -8,7 +9,8 @@ import { Username } from "../../components/Auth/Username";
 import { Password } from "../../components/Auth/Password";
 import { RepeatPassword } from "../../components/Auth/RepeatPassword";
 import { useAuthContext } from "./../../context/auth/authContext";
-import { edit } from "../../api/auth.api";
+import { setUserActionError } from "./../../context/auth/authActions";
+import { edit, remove } from "../../api/auth.api";
 import { submitApi } from "../../helpers/submitApi.js";
 import { Select } from "./../../components/Auth/Select";
 import { languages, themes } from "./../../constants";
@@ -16,12 +18,47 @@ import { languages, themes } from "./../../constants";
 export const Edit = () => {
   const { register, handleSubmit, errors, watch, setValue } = useForm();
   const [{ username, email, language, theme }, dispatch] = useAuthContext();
-  const password = useRef({});
   const history = useHistory();
+  const password = useRef({});
+  const oldPassword = useRef({});
+  oldPassword.current = watch("oldPassword", "");
   password.current = watch("password", "");
 
   const onSubmit = (data) => {
     submitApi({ data, api: edit, action: "Edit", history, dispatch });
+  };
+
+  const deleteUser = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover you account!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Type your password",
+          type: "password",
+        },
+      },
+    }).then((password) => {
+      if (password) {
+        remove({ password })
+          .then((response) => {
+            console.log(response);
+            dispatch(setUserActionError());
+            history.push("/");
+          })
+          .catch(e => {
+            console.error(e);
+            swal("Error!", e.msg, "error", {
+              button: false,
+              timer: 2900,
+            });
+          });
+      }
+    });
   };
 
   useEffect(() => {
@@ -29,7 +66,7 @@ export const Edit = () => {
     setValue("username", username);
     setValue("language", language);
     setValue("theme", theme);
-  }, [email, username, setValue]);
+  }, [email, username, setValue, language, theme]);
 
   return (
     <>
@@ -64,10 +101,11 @@ export const Edit = () => {
           register={register}
           errors={errors}
         />
-        <Select type='language' register={register} selects={languages} />
-        <Select type='theme' register={register} selects={themes}/>
+        <Select type="language" register={register} selects={languages} />
+        <Select type="theme" register={register} selects={themes} />
         <input type="submit" />
       </Form>
+      <button onClick={() => deleteUser()}>Delete Account</button>
     </>
   );
 };

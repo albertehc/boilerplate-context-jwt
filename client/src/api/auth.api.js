@@ -13,7 +13,7 @@ export const edit = data => {
 }
 
 export const remove = data => {
-  return axiosInstance.delete('/api/auth', data);
+  return axiosInstance.delete('/api/auth', { data });
 }
 
 export const me = () => {

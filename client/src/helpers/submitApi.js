@@ -9,7 +9,6 @@ export const submitApi = ({ data, api, action, history, dispatch }) => {
   dispatch(setLoading());
   api(data)
     .then((res) => {
-      console.log(res)
       dispatch(setUserAction(res));
       swal("Done!", `${action} success!`, "success", {
         button: false,
