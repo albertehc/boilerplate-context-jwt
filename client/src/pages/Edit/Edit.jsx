@@ -45,19 +45,25 @@ export const Edit = () => {
     }).then((password) => {
       if (password) {
         remove({ password })
-          .then((response) => {
-            console.log(response);
+          .then(() => {
             dispatch(setUserActionError());
+            swal("Done!", `User deleted!`, "success", {
+              button: false,
+              timer: 2900,
+            });
             history.push("/");
+
           })
           .catch(e => {
-            console.error(e);
-            swal("Error!", e.msg, "error", {
+            swal("Error!", "Password incorrect", {
               button: false,
               timer: 2900,
             });
           });
-      }
+      } else swal("Error!", "Password empty!", {
+              button: false,
+              timer: 1900,
+            });
     });
   };
 

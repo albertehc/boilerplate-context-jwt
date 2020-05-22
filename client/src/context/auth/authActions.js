@@ -4,14 +4,14 @@ import {
   LOADING
 } from "../../constants";
 
-export const setUserAction = (data) => ({
+export const setUserAction = data => ({
   type: USER_RESPONSE,
   payload: data,
 });
-export const setUserActionError = (data) => ({
+export const setUserActionError = data => ({
   type: USER_RESPONSE_ERROR,
   payload: data,
 });
-export const setLoading = (data) => ({
+export const setLoading = () => ({
   type: LOADING
 });
